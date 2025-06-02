@@ -1,4 +1,6 @@
-package com.maron.dawid;
+package com.maron.dawid.main;
+
+import com.maron.dawid.inputs.KeyboardInputs;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,6 +8,7 @@ import java.awt.*;
 public class GamePanel extends JPanel {
 
     public GamePanel() {
+        addKeyListener(new KeyboardInputs());
     }
 
     @Override

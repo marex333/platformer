@@ -1,4 +1,4 @@
-package com.maron.dawid;
+package com.maron.dawid.main;
 
 import javax.swing.*;
 
