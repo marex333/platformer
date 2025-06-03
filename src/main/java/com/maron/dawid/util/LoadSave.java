@@ -7,7 +7,11 @@ import java.io.InputStream;
 
 public class LoadSave {
 
-    public static final String PLAYER_ATLAS = "char_hood.png";
+    public static final String PLAYER_ATLAS = "character/char_hood.png";
+    public static final String LEVEL_ATLAS = "level/TileToon1_0.png";
+    public static final String LEVEL_ATLAS_2 = "level/TileToon2.png";
+    public static final String BACKGROUND_ATLAS = "level/BG_01.png";
+    public static final String SKY = "level/sky_01.png";
 
     public static BufferedImage getSpriteAtlas(String sprite) {
         BufferedImage img = null;
