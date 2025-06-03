@@ -1,5 +1,10 @@
 package com.maron.dawid.main;
 
+import com.maron.dawid.entities.Player;
+
+import java.awt.*;
+import java.awt.event.WindowEvent;
+
 public class Game implements Runnable {
 
     private final int FPS_SET = 120;
@@ -9,16 +14,27 @@ public class Game implements Runnable {
     private GamePanel gamePanel;
     private Thread gameThread;
 
+    private Player player;
+
     public Game() {
-        gamePanel = new GamePanel();
+        initClasses();
+        gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
         startGameLoop();
     }
 
+    private void initClasses() {
+        player = new Player(200, 200);
+    }
+
     private void update() {
-        gamePanel.updateGame();
+        player.update();
+    }
+
+    public void render(Graphics g) {
+        player.render(g);
     }
 
     @Override
@@ -67,8 +83,16 @@ public class Game implements Runnable {
 
     }
 
+    public void windowLostFocus() {
+        player.resetDirBooleans();
+    }
+
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
