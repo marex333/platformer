@@ -3,19 +3,36 @@ package com.maron.dawid.main;
 import com.maron.dawid.inputs.KeyboardInputs;
 import com.maron.dawid.inputs.MouseInputs;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GamePanel extends JPanel {
     private MouseInputs mouseInputs;
-    private float xDelta = 100, yDelta = 100;
+    private float xDelta = 0, yDelta = 0;
+    private BufferedImage img, subImg;
 
     public GamePanel() {
+        importImg();
+
         setPanelSize();
         mouseInputs = new MouseInputs(this);
         addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
+    }
+
+    private void importImg() {
+        InputStream is = getClass().getResourceAsStream("/char_hood.png");
+
+        try {
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setPanelSize() {
@@ -42,5 +59,8 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        var image1 = img.getSubimage(0 * 32,0 * 32, 32, 32);
+        g.drawImage(image1, (int)xDelta, (int)yDelta, 120, 120, null);
     }
 }
