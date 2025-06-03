@@ -2,6 +2,13 @@ package com.maron.dawid.utils;
 
 public class Constants {
 
+    public enum Direction {
+        LEFT,
+        UP,
+        RIGHT,
+        DOWN
+    }
+
     public static class PlayerConstants {
 
         public enum PlayerAction {

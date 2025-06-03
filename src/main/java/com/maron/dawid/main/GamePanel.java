@@ -2,6 +2,7 @@ package com.maron.dawid.main;
 
 import com.maron.dawid.inputs.KeyboardInputs;
 import com.maron.dawid.inputs.MouseInputs;
+import com.maron.dawid.utils.Constants.Direction;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,6 +20,8 @@ public class GamePanel extends JPanel {
     private BufferedImage[][] animations;
     private int animationTick, animationIndex, animationSpeed = 60;
     private PlayerAction playerAction = PlayerAction.RUN;
+    private Direction playerDirection;
+    private boolean moving = false;
 
     public GamePanel() {
         importImg();
@@ -34,7 +37,6 @@ public class GamePanel extends JPanel {
     private void loadAnimations() {
         int xSize = 32, ySize = 32;
         animations = new BufferedImage[9][8];
-
 
         for (int j = 0; j < animations.length; j++) {
             for (int i = 0; i < animations[0].length; i++) {
@@ -82,12 +84,21 @@ public class GamePanel extends JPanel {
         this.yDelta = y;
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void setDirection(Direction direction) {
+        playerDirection = direction;
+        moving = true;
+    }
 
-        updateAnimationTick();
-        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) xDelta, (int) yDelta, 120, 120, null);
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public void setAnimation() {
+        if (moving) {
+            playerAction = PlayerAction.RUN;
+        } else {
+            playerAction = PlayerAction.IDLE;
+        }
     }
 
     private void updateAnimationTick() {
@@ -99,5 +110,26 @@ public class GamePanel extends JPanel {
                 animationIndex = 0;
             }
         }
+    }
+
+    private void updatePosition() {
+        if(moving) {
+            switch(playerDirection) {
+                case LEFT -> xDelta -=5;
+                case UP -> yDelta -= 5;
+                case RIGHT -> xDelta += 5;
+                case DOWN -> yDelta += 5;
+            }
+        }
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        updateAnimationTick();
+
+        setAnimation();
+        updatePosition();
+        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) xDelta, (int) yDelta, 120, 120, null);
     }
 }
