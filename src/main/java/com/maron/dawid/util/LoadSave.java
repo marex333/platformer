@@ -1,4 +1,4 @@
-package com.maron.dawid.utils;
+package com.maron.dawid.util;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

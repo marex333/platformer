@@ -1,11 +1,11 @@
-package com.maron.dawid.entities;
+package com.maron.dawid.entity;
 
-import com.maron.dawid.utils.Constants.PlayerConstants.PlayerAction;
+import com.maron.dawid.util.Constants.PlayerConstants.PlayerAction;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.maron.dawid.utils.LoadSave.*;
+import static com.maron.dawid.util.LoadSave.*;
 
 public class Player extends Entity {
     private final int CHARACTER_SPEED = 1;

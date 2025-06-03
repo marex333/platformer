@@ -1,4 +1,4 @@
-package com.maron.dawid.entities;
+package com.maron.dawid.entity;
 
 public abstract class Entity {
 

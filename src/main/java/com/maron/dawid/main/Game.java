@@ -1,6 +1,6 @@
 package com.maron.dawid.main;
 
-import com.maron.dawid.entities.Player;
+import com.maron.dawid.entity.Player;
 
 import java.awt.*;
 

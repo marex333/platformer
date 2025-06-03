@@ -1,7 +1,7 @@
 package com.maron.dawid.main;
 
-import com.maron.dawid.inputs.KeyboardInputs;
-import com.maron.dawid.inputs.MouseInputs;
+import com.maron.dawid.input.KeyboardInputs;
+import com.maron.dawid.input.MouseInputs;
 
 import javax.swing.*;
 import java.awt.*;
