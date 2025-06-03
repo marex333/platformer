@@ -48,10 +48,6 @@ public class Constants {
                 actionIndex = playerAction;
                 this.animationsNumber = animationsNumber;
             }
-
-            public int getAnimationNumber() {
-                return animationsNumber;
-            }
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.maron.dawid.inputs;
 
 import com.maron.dawid.main.GamePanel;
-import com.maron.dawid.utils.Constants.Direction;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

@@ -1,6 +1,6 @@
 package com.maron.dawid.entities;
 
-import com.maron.dawid.utils.Constants;
+import com.maron.dawid.utils.Constants.PlayerConstants.PlayerAction;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,9 +11,10 @@ import java.io.InputStream;
 public class Player extends Entity {
     private final int CHARACTER_SPEED = 1;
     private int animationTick, animationIndex, animationSpeed = 60;
-    private Constants.PlayerConstants.PlayerAction playerAction = Constants.PlayerConstants.PlayerAction.RUN;
+    private PlayerAction playerAction = PlayerAction.RUN;
     private boolean up, down, left, right;
     private boolean moving = false;
+    private boolean attacking = false;
     private BufferedImage[][] animations;
 
 
@@ -40,6 +41,7 @@ public class Player extends Entity {
             animationIndex++;
             if (animationIndex >= playerAction.getAnimationsNumber()) {
                 animationIndex = 0;
+                attacking = false;
             }
         }
     }
@@ -62,14 +64,27 @@ public class Player extends Entity {
             y += CHARACTER_SPEED;
             moving = true;
         }
+        // fix missing subImages for idle
+        if (!moving && !attacking && playerAction != PlayerAction.IDLE) {
+            resetTick();
+        }
     }
 
     public void setAnimation() {
         if (moving) {
-            playerAction = Constants.PlayerConstants.PlayerAction.RUN;
+            playerAction = PlayerAction.RUN;
         } else {
-            playerAction = Constants.PlayerConstants.PlayerAction.IDLE;
+            playerAction = PlayerAction.IDLE;
         }
+
+        if (attacking) {
+            playerAction = PlayerAction.ATTACK;
+        }
+    }
+
+    private void resetTick() {
+        animationTick = 0;
+        animationIndex = 0;
     }
 
     private void loadAnimations() {
@@ -79,7 +94,7 @@ public class Player extends Entity {
             animations = new BufferedImage[9][8];
             int xSize = 32, ySize = 32;
             for (int j = 0; j < animations.length; j++) {
-                for (int i = 0; i < animations[0].length; i++) {
+                for (int i = 0; i < animations[j].length; i++) {
                     animations[j][i] = img.getSubimage(i * xSize, j * ySize, xSize, ySize);
                 }
             }
@@ -99,6 +114,10 @@ public class Player extends Entity {
         down = false;
         left = false;
         right = false;
+    }
+
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 
     public void setUp(boolean up) {
