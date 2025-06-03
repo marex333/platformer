@@ -1,6 +1,7 @@
 package com.maron.dawid.main;
 
 import com.maron.dawid.entity.Player;
+import com.maron.dawid.level.LevelHandler;
 
 import java.awt.*;
 
@@ -19,8 +20,8 @@ public class Game implements Runnable {
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Thread gameThread;
-
     private Player player;
+    private LevelHandler levelHandler;
 
     public Game() {
         initClasses();
@@ -34,14 +35,17 @@ public class Game implements Runnable {
 
     private void initClasses() {
         player = new Player(200, 200);
+        levelHandler = new LevelHandler(this);
     }
 
     private void update() {
         player.update();
+        levelHandler.update();
     }
 
     public void render(Graphics g) {
         player.render(g);
+        levelHandler.draw(g);
     }
 
     @Override
