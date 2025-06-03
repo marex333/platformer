@@ -10,12 +10,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.maron.dawid.utils.Constants.PlayerConstants.*;
+
 public class GamePanel extends JPanel {
     private MouseInputs mouseInputs;
     private float xDelta = 0, yDelta = 0;
     private BufferedImage img;
-    private BufferedImage[] idleAnimation;
+    private BufferedImage[][] animations;
     private int animationTick, animationIndex, animationSpeed = 60;
+    private PlayerAction playerAction = PlayerAction.RUN;
 
     public GamePanel() {
         importImg();
@@ -30,11 +33,16 @@ public class GamePanel extends JPanel {
 
     private void loadAnimations() {
         int xSize = 32, ySize = 32;
-        idleAnimation = new BufferedImage[2];
-        for (int i = 0; i < idleAnimation.length; i++) {
-            idleAnimation[i] = img.getSubimage(i * xSize, 0 * ySize, xSize, ySize);
+        animations = new BufferedImage[9][8];
 
+
+        for (int j = 0; j < animations.length; j++) {
+            for (int i = 0; i < animations[0].length; i++) {
+                animations[j][i] = img.getSubimage(i * xSize, j * ySize, xSize, ySize);
+
+            }
         }
+
     }
 
     private void importImg() {
@@ -47,7 +55,7 @@ public class GamePanel extends JPanel {
         } finally {
             try {
                 is.close();
-            } catch(IOException ioException) {
+            } catch (IOException ioException) {
 
             }
         }
@@ -79,7 +87,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
 
         updateAnimationTick();
-        g.drawImage(idleAnimation[animationIndex], (int)xDelta, (int)yDelta, 120, 120, null);
+        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) xDelta, (int) yDelta, 120, 120, null);
     }
 
     private void updateAnimationTick() {
@@ -87,7 +95,7 @@ public class GamePanel extends JPanel {
         if (animationTick >= animationSpeed) {
             animationTick = 0;
             animationIndex++;
-            if (animationIndex >= idleAnimation.length) {
+            if (animationIndex >= playerAction.getAnimationsNumber()) {
                 animationIndex = 0;
             }
         }
