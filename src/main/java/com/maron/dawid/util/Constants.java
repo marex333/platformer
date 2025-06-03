@@ -1,4 +1,4 @@
-package com.maron.dawid.utils;
+package com.maron.dawid.util;
 
 public class Constants {
 

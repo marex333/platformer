@@ -1,16 +1,15 @@
-package com.maron.dawid.entities;
+package com.maron.dawid.entity;
 
-import com.maron.dawid.utils.Constants.PlayerConstants.PlayerAction;
+import com.maron.dawid.util.Constants.PlayerConstants.PlayerAction;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+
+import static com.maron.dawid.util.LoadSave.*;
 
 public class Player extends Entity {
     private final int CHARACTER_SPEED = 1;
-    private int animationTick, animationIndex, animationSpeed = 60;
+    private int animationTick, animationIndex, animationSpeed = 30;
     private PlayerAction playerAction = PlayerAction.RUN;
     private boolean up, down, left, right;
     private boolean moving = false;
@@ -18,8 +17,8 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
 
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
     }
 
@@ -30,7 +29,7 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) x, (int) y, 120, 120, null);
+        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) x, (int) y, width, height, null);
 
     }
 
@@ -88,23 +87,12 @@ public class Player extends Entity {
     }
 
     private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/char_hood.png");
-        try {
-            BufferedImage img = ImageIO.read(is);
-            animations = new BufferedImage[9][8];
-            int xSize = 32, ySize = 32;
-            for (int j = 0; j < animations.length; j++) {
-                for (int i = 0; i < animations[j].length; i++) {
-                    animations[j][i] = img.getSubimage(i * xSize, j * ySize, xSize, ySize);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException ioException) {
-
+        BufferedImage img = getSpriteAtlas(PLAYER_ATLAS);
+        animations = new BufferedImage[9][8];
+        int xSize = 32, ySize = 32;
+        for (int j = 0; j < animations.length; j++) {
+            for (int i = 0; i < animations[j].length; i++) {
+                animations[j][i] = img.getSubimage(i * xSize, j * ySize, xSize, ySize);
             }
         }
     }

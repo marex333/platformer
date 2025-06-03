@@ -1,20 +1,27 @@
 package com.maron.dawid.main;
 
-import com.maron.dawid.entities.Player;
+import com.maron.dawid.entity.Player;
+import com.maron.dawid.level.LevelHandler;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 public class Game implements Runnable {
 
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
+    public final static int TILES_DEFAULT_SIZE = 32;
+    public final static float SCALE = 1f;
+    public final static int TILES_IN_WIDTH = 26;
+    public final static int TILES_IN_HEIGHT = 14;
+    public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
+    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+    public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Thread gameThread;
-
     private Player player;
+    private LevelHandler levelHandler;
 
     public Game() {
         initClasses();
@@ -22,18 +29,22 @@ public class Game implements Runnable {
         gameWindow = new GameWindow(gamePanel);
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
+        gamePanel.setBackground(Color.GRAY);
         startGameLoop();
     }
 
     private void initClasses() {
-        player = new Player(200, 200);
+        player = new Player(200, 200, (int)(64 * SCALE), (int)(64 * SCALE));
+        levelHandler = new LevelHandler(this);
     }
 
     private void update() {
         player.update();
+        levelHandler.update();
     }
 
     public void render(Graphics g) {
+        levelHandler.draw(g);
         player.render(g);
     }
 
@@ -42,8 +53,6 @@ public class Game implements Runnable {
         // nano-second
         double timePerFrame = 1_000_000_000.0 / FPS_SET;
         double timePerUpdate = 1_000_000_000.0 / UPS_SET;
-        long lastFrame = System.nanoTime();
-        long now;
 
         long previousTime = System.nanoTime();
         int frames = 0;

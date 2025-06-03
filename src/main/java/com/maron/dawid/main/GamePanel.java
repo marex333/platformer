@@ -1,10 +1,13 @@
 package com.maron.dawid.main;
 
-import com.maron.dawid.inputs.KeyboardInputs;
-import com.maron.dawid.inputs.MouseInputs;
+import com.maron.dawid.input.KeyboardInputs;
+import com.maron.dawid.input.MouseInputs;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static com.maron.dawid.main.Game.GAME_HEIGHT;
+import static com.maron.dawid.main.Game.GAME_WIDTH;
 
 public class GamePanel extends JPanel {
     private Game game;
@@ -20,8 +23,9 @@ public class GamePanel extends JPanel {
     }
 
     private void setPanelSize() {
-        Dimension size = new Dimension(1280, 720);
+        Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
         setPreferredSize(size);
+        System.out.printf("size: %s : %s\n", GAME_WIDTH, GAME_HEIGHT);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.maron.dawid.inputs;
+package com.maron.dawid.input;
 
 import com.maron.dawid.main.GamePanel;
 
