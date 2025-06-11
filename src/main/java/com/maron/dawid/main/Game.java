@@ -10,7 +10,7 @@ public class Game implements Runnable {
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
     public final static int TILES_DEFAULT_SIZE = 32;
-    public final static float SCALE = 1.5f;
+    public final static float SCALE = 1f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
     public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
@@ -34,7 +34,7 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(200, 200);
+        player = new Player(200, 200, (int)(64 * SCALE), (int)(64 * SCALE));
         levelHandler = new LevelHandler(this);
     }
 
@@ -44,8 +44,8 @@ public class Game implements Runnable {
     }
 
     public void render(Graphics g) {
-        player.render(g);
         levelHandler.draw(g);
+        player.render(g);
     }
 
     @Override
@@ -53,8 +53,6 @@ public class Game implements Runnable {
         // nano-second
         double timePerFrame = 1_000_000_000.0 / FPS_SET;
         double timePerUpdate = 1_000_000_000.0 / UPS_SET;
-        long lastFrame = System.nanoTime();
-        long now;
 
         long previousTime = System.nanoTime();
         int frames = 0;

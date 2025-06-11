@@ -9,7 +9,7 @@ import static com.maron.dawid.util.LoadSave.*;
 
 public class Player extends Entity {
     private final int CHARACTER_SPEED = 1;
-    private int animationTick, animationIndex, animationSpeed = 60;
+    private int animationTick, animationIndex, animationSpeed = 30;
     private PlayerAction playerAction = PlayerAction.RUN;
     private boolean up, down, left, right;
     private boolean moving = false;
@@ -17,8 +17,8 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
 
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
     }
 
@@ -29,7 +29,7 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) x, (int) y, 120, 120, null);
+        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) x, (int) y, width, height, null);
 
     }
 
