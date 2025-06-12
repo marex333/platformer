@@ -24,12 +24,14 @@ public class Player extends Entity {
 
     public void update() {
         updatePosition();
+        updateHitbox();
         updateAnimationTick();
         setAnimation();
     }
 
     public void render(Graphics g) {
         g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) x, (int) y, width, height, null);
+        drawHitbox(g);
 
     }
 
