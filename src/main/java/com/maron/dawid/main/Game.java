@@ -9,8 +9,9 @@ public class Game implements Runnable {
 
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
+    private final static int CHARACTER_SIZE = 50;
     public final static int TILES_DEFAULT_SIZE = 32;
-    public final static float SCALE = 1f;
+    public final static float SCALE = 1.5f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
     public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
@@ -34,8 +35,9 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(200, 200, (int)(64 * SCALE), (int)(64 * SCALE));
         levelHandler = new LevelHandler(this);
+        player = new Player(200, 200, (int)(CHARACTER_SIZE * SCALE), (int)(CHARACTER_SIZE * SCALE));
+        player.loadLevelData(levelHandler.getLevel().getLevelData());
     }
 
     private void update() {

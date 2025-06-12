@@ -1,10 +1,12 @@
 package com.maron.dawid.entity;
 
+import com.maron.dawid.main.Game;
 import com.maron.dawid.util.Constants.PlayerConstants.PlayerAction;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static com.maron.dawid.util.HelperMethods.canMoveHere;
 import static com.maron.dawid.util.LoadSave.*;
 
 public class Player extends Entity {
@@ -15,11 +17,17 @@ public class Player extends Entity {
     private boolean moving = false;
     private boolean attacking = false;
     private BufferedImage[][] animations;
+    private int[][] levelData;
+    private float xDrawOffset = 11 * Game.SCALE;
+    private float yDrawOffset = 6 * Game.SCALE;
+    private int charWidth = 24;
+    private int charHeight = 44;
 
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
+        initHitbox(x, y, charWidth * Game.SCALE, charHeight * Game.SCALE);
     }
 
     public void update() {
@@ -29,7 +37,8 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) x, (int) y, width, height, null);
+        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+        drawHitbox(g);
 
     }
 
@@ -48,25 +57,35 @@ public class Player extends Entity {
     private void updatePosition() {
         moving = false;
 
-        if (left && !right) {
-            x -= CHARACTER_SPEED;
-            moving = true;
-        } else if (right && !left) {
-            x += CHARACTER_SPEED;
-            moving = true;
+        // no movement case
+        if (!left && !right && !up && !down) {
+            return;
         }
 
-        if (up && !down) {
-            y -= CHARACTER_SPEED;
+        float xSpeed = 0, ySpeed = 0;
+
+        if (left && !right) {
+            xSpeed = -CHARACTER_SPEED;
             moving = true;
-        } else if (down && !up) {
-            y += CHARACTER_SPEED;
-            moving = true;
+        } else if (right && !left) {
+            xSpeed += CHARACTER_SPEED;
         }
-        // fix missing subImages for idle
+        if (up && !down) {
+            ySpeed = -CHARACTER_SPEED;
+        } else if (down && !up) {
+            ySpeed = CHARACTER_SPEED;
+        }
+        // fixes missing subImages for idle
         if (!moving && !attacking && playerAction != PlayerAction.IDLE) {
             resetTick();
         }
+
+        if(canMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, levelData)) {
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
+            moving = true;
+        }
+
     }
 
     public void setAnimation() {
@@ -102,6 +121,10 @@ public class Player extends Entity {
         down = false;
         left = false;
         right = false;
+    }
+
+    public void loadLevelData(int[][] levelData) {
+        this.levelData = levelData;
     }
 
     public void setAttacking(boolean attacking) {
