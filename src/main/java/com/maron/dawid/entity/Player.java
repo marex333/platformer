@@ -21,7 +21,7 @@ public class Player extends Entity {
     private float xDrawOffset = 11 * Game.SCALE;
     private float yDrawOffset = 6 * Game.SCALE;
     private int charWidth = 24;
-    private int charHeight = 44;
+    private int charHeight = 43;
 
 
     public Player(float x, float y, int width, int height) {
@@ -59,6 +59,19 @@ public class Player extends Entity {
 
         // no movement case
         if (!left && !right && !up && !down) {
+            // TODO fixes sprite miss at animation change. Need better solution when more action will be added
+            if (playerAction != PlayerAction.IDLE && !attacking) {
+                resetTick();
+            }
+            return;
+        }
+
+        // negate movement
+        if (left && right || up && down) {
+            // fixes sprite miss at animation change
+            if (playerAction != PlayerAction.IDLE && !attacking) {
+                resetTick();
+            }
             return;
         }
 
@@ -66,7 +79,6 @@ public class Player extends Entity {
 
         if (left && !right) {
             xSpeed = -CHARACTER_SPEED;
-            moving = true;
         } else if (right && !left) {
             xSpeed += CHARACTER_SPEED;
         }
@@ -75,17 +87,16 @@ public class Player extends Entity {
         } else if (down && !up) {
             ySpeed = CHARACTER_SPEED;
         }
-        // fixes missing subImages for idle
-        if (!moving && !attacking && playerAction != PlayerAction.IDLE) {
-            resetTick();
-        }
 
         if(canMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, levelData)) {
             hitbox.x += xSpeed;
             hitbox.y += ySpeed;
             moving = true;
         }
-
+        // TODO fixes sprite miss at animation change. Need better solution when more action will be added
+        if (playerAction != PlayerAction.IDLE && !attacking && !moving) {
+            resetTick();
+        }
     }
 
     public void setAnimation() {
