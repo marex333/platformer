@@ -5,6 +5,7 @@ import com.maron.dawid.util.Constants.PlayerConstants.PlayerAction;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static com.maron.dawid.util.HelperMethods.canMoveHere;
 import static com.maron.dawid.util.LoadSave.*;
 
 public class Player extends Entity {
@@ -51,25 +52,35 @@ public class Player extends Entity {
     private void updatePosition() {
         moving = false;
 
-        if (left && !right) {
-            x -= CHARACTER_SPEED;
-            moving = true;
-        } else if (right && !left) {
-            x += CHARACTER_SPEED;
-            moving = true;
+        // no movement case
+        if (!left && !right && !up && !down) {
+            return;
         }
 
+        float xSpeed = 0, ySpeed = 0;
+
+        if (left && !right) {
+            xSpeed = -CHARACTER_SPEED;
+            moving = true;
+        } else if (right && !left) {
+            xSpeed += CHARACTER_SPEED;
+        }
         if (up && !down) {
-            y -= CHARACTER_SPEED;
-            moving = true;
+            ySpeed = -CHARACTER_SPEED;
         } else if (down && !up) {
-            y += CHARACTER_SPEED;
-            moving = true;
+            ySpeed = CHARACTER_SPEED;
         }
         // fixes missing subImages for idle
         if (!moving && !attacking && playerAction != PlayerAction.IDLE) {
             resetTick();
         }
+
+        if(canMoveHere(x + xSpeed, y + ySpeed, width, height, levelData)) {
+            this.x += xSpeed;
+            this.y += ySpeed;
+            moving = true;
+        }
+
     }
 
     public void setAnimation() {
