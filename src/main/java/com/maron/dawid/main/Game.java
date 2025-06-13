@@ -37,6 +37,7 @@ public class Game implements Runnable {
     private void initClasses() {
         levelHandler = new LevelHandler(this);
         player = new Player(200, 200, (int)(CHARACTER_SIZE * SCALE), (int)(CHARACTER_SIZE * SCALE));
+        player.loadLevelData(levelHandler.getLevel().getLevelData());
     }
 
     private void update() {

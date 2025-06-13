@@ -15,6 +15,7 @@ public class Player extends Entity {
     private boolean moving = false;
     private boolean attacking = false;
     private BufferedImage[][] animations;
+    private int[][] levelData;
 
 
     public Player(float x, float y, int width, int height) {
@@ -65,7 +66,7 @@ public class Player extends Entity {
             y += CHARACTER_SPEED;
             moving = true;
         }
-        // fix missing subImages for idle
+        // fixes missing subImages for idle
         if (!moving && !attacking && playerAction != PlayerAction.IDLE) {
             resetTick();
         }
@@ -104,6 +105,10 @@ public class Player extends Entity {
         down = false;
         left = false;
         right = false;
+    }
+
+    public void loadLevelData(int[][] levelData) {
+        this.levelData = levelData;
     }
 
     public void setAttacking(boolean attacking) {
