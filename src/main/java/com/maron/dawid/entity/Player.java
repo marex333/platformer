@@ -1,5 +1,6 @@
 package com.maron.dawid.entity;
 
+import com.maron.dawid.main.Game;
 import com.maron.dawid.util.Constants.PlayerConstants.PlayerAction;
 
 import java.awt.*;
@@ -17,22 +18,26 @@ public class Player extends Entity {
     private boolean attacking = false;
     private BufferedImage[][] animations;
     private int[][] levelData;
+    private float xDrawOffset = 11 * Game.SCALE;
+    private float yDrawOffset = 6 * Game.SCALE;
+    private int charWidth = 24;
+    private int charHeight = 44;
 
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
+        initHitbox(x, y, charWidth * Game.SCALE, charHeight * Game.SCALE);
     }
 
     public void update() {
         updatePosition();
-        updateHitbox();
         updateAnimationTick();
         setAnimation();
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) x, (int) y, width, height, null);
+        g.drawImage(animations[playerAction.getActionIndex()][animationIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
         drawHitbox(g);
 
     }
@@ -75,9 +80,9 @@ public class Player extends Entity {
             resetTick();
         }
 
-        if(canMoveHere(x + xSpeed, y + ySpeed, width, height, levelData)) {
-            this.x += xSpeed;
-            this.y += ySpeed;
+        if(canMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, levelData)) {
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
             moving = true;
         }
 
